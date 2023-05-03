@@ -63,5 +63,11 @@ public class Main {
         //System.out.println(System.currentTimeMillis());
         //System.out.println(conteudo);
         //System.out.println(System.currentTimeMillis());
+
+        // next steps
+        //1- contar quantas palavras tem no arquivo
+        //2- fazer uma contagem (relatorio) da quantidade de repetição de cada letra
+        //3- remover todos os caracteres especiais e salvar sem estes caracteres (utilizar algo do apache commons util)
+
     }
 }
