@@ -2,6 +2,9 @@ package org.example;
 import java.io.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.pattern.LogEvent;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,30 +21,47 @@ public class Main {
 
         //Obtendo o diretório temporário
         File dirTmp = FileUtils.getTempDirectory();
-        System.out.println("########obtive o diretório#######");
-        System.out.println(System.currentTimeMillis());
+
+         final Logger logger = LogManager.getLogger(Main.class);
+
+
+        //System.out.println("########obtive o diretório#######");
+        //System.out.println(System.currentTimeMillis());
+        logger.info("########obtive o diretório#######");
+        logger.debug((System.currentTimeMillis()));
 
         //Printando o diretório
-        System.out.println(((File) dirTmp).getName());
+        //System.out.println(((File) dirTmp).getName());
+        logger.debug(((File) dirTmp).getName());
 
         //Copiando o arquivo à um diretório temporário
         FileUtils.copyFileToDirectory(arquivo, dirTmp);
-        System.out.println("########copiei o arquivo ao dir temporario#########");
-        System.out.println(System.currentTimeMillis());
+
+        logger.info("########copiei o arquivo ao dir temporario#########");
+        logger.debug(System.currentTimeMillis());
+        //System.out.println("########copiei o arquivo ao dir temporario#########");
+        //System.out.println(System.currentTimeMillis());
 
         //Criando um novo arquivo
         File novoArqTemp = FileUtils.getFile(dirTmp, arquivo.getName());
-        System.out.println("#######criei o arquivo novo#######");
-        System.out.println(System.currentTimeMillis());
+        logger.info("#######criei o arquivo novo#######");
+        logger.debug(System.currentTimeMillis());
+        //System.out.println("#######criei o arquivo novo#######");
+        //System.out.println(System.currentTimeMillis());
 
         //Copiando o conteúdo do arquivo
         String conteudo = FileUtils.readFileToString(novoArqTemp, "UTF-8");
-        System.out.println("########peguei o conteudo do arquivo########");
-        System.out.println(System.currentTimeMillis());
+        logger.info("########peguei o conteudo do arquivo########");
+        logger.debug(System.currentTimeMillis());
+        //System.out.println("########peguei o conteudo do arquivo########");
+        //System.out.println(System.currentTimeMillis());
 
         //Printando o conteúdo do arquivo
-        System.out.println(System.currentTimeMillis());
-        System.out.println(conteudo);
-        System.out.println(System.currentTimeMillis());
+        logger.debug(System.currentTimeMillis());
+        logger.debug(conteudo);
+        logger.debug(System.currentTimeMillis());
+        //System.out.println(System.currentTimeMillis());
+        //System.out.println(conteudo);
+        //System.out.println(System.currentTimeMillis());
     }
 }
