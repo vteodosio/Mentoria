@@ -5,14 +5,26 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.pattern.LogEvent;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 public class Main {
-    public static void main(String[] args) {
+    static final int MAX_CHAR = 512;
+    public static void main(String[] args){
+        //Contador de palavras
         try{
-            utilizandoArquivos();
+            //contandoPalavras();
+            //contandoCaracteres();
+            relatorioCaracteres();
         } catch (IOException e){
             System.out.println(e.getMessage());
         }
+
+       /* try{
+            utilizandoArquivos();
+        } catch (IOException e){
+            System.out.println(e.getMessage());
+        }*/
     }
 
     public static void utilizandoArquivos () throws IOException{
@@ -23,7 +35,6 @@ public class Main {
         File dirTmp = FileUtils.getTempDirectory();
 
          final Logger logger = LogManager.getLogger(Main.class);
-
 
         //System.out.println("########obtive o diretório#######");
         //System.out.println(System.currentTimeMillis());
@@ -63,11 +74,78 @@ public class Main {
         //System.out.println(System.currentTimeMillis());
         //System.out.println(conteudo);
         //System.out.println(System.currentTimeMillis());
+    }
 
-        // next steps
-        //1- contar quantas palavras tem no arquivo
-        //2- fazer uma contagem (relatorio) da quantidade de repetição de cada letra
-        //3- remover todos os caracteres especiais e salvar sem estes caracteres (utilizar algo do apache commons util)
+    public static void contandoPalavras() throws IOException {
+        final Logger logger = LogManager.getLogger(Main.class);
 
+        /* Bloco de contagem da quantidade de palavras no arquivo*/
+
+        String line;
+        int count = 0;
+
+        FileReader arquivo = new FileReader("lero-lero.txt");
+        BufferedReader br = new BufferedReader(arquivo);
+        while ((line = br.readLine()) != null){
+            String words[] = line.split(" ");
+            count = count + words.length;
+        }
+
+        logger.debug("Número de palavras no arquivo: ");
+        logger.debug(count);
+    }
+
+    public static void contandoCaracteres() throws IOException{
+        final Logger logger = LogManager.getLogger(Main.class);
+
+        String data;
+        int count = 0;
+
+        FileReader arquivo1 = new FileReader("lero-lero.txt");
+        BufferedReader br1 = new BufferedReader(arquivo1);
+
+        while ((data = br1.readLine()) != null){
+            count += data.length();
+        }
+        logger.debug("Número de letras no arquivo: ");
+        logger.debug(count);
+    }
+
+    public static void relatorioCaracteres() throws IOException{
+        final Logger logger = LogManager.getLogger(Main.class);
+
+        FileReader arquivo1 = new FileReader("lero-lero.txt");
+        BufferedReader br1 = new BufferedReader(arquivo1);
+        String data = br1.toString();
+
+
+        int count[] = new int[MAX_CHAR];
+        int len = data.length();
+
+        for (int i = 0; i < len; i++){
+            count[data.charAt(i)]++;
+        }
+
+        char ch[] = new char[data.length()];
+        for (int i = 0; i < len; i++)
+        {
+            ch[i] = data.charAt(i);
+            int find = 0;
+            for (int j = 0; j <= i; j++)
+            {
+//if any matches found
+                if (data.charAt(i) == ch[j])
+                    find++;
+            }
+            if (find == 1)
+//prints occurrence of the character
+                System.out.println("The occurrence of "+ data.charAt(i)+ " is: " + count[data.charAt(i)]);
+        }
     }
 }
+
+// next steps
+//1- contar quantas palavras tem no arquivo - done
+//2- fazer uma contagem (relatorio) da quantidade de repetição de cada letra
+//3- remover todos os caracteres especiais e salvar sem estes caracteres (utilizar algo do apache commons util)
+
