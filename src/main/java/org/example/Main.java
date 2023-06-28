@@ -7,15 +7,17 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.pattern.LogEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Scanner;
 
 public class Main {
-    static final int MAX_CHAR = 512;
+    static final int MAX_CHAR = 1024;
     public static void main(String[] args){
         //Contador de palavras
         try{
             //contandoPalavras();
             //contandoCaracteres();
             relatorioCaracteres();
+            //caracteresEspeciais();
         } catch (IOException e){
             System.out.println(e.getMessage());
         }
@@ -86,7 +88,7 @@ public class Main {
 
         FileReader arquivo = new FileReader("lero-lero.txt");
         BufferedReader br = new BufferedReader(arquivo);
-        while ((line = br.readLine()) != null){
+        while ((line = br.readLine()) != null) {
             String words[] = line.split(" ");
             count = count + words.length;
         }
@@ -114,12 +116,84 @@ public class Main {
     public static void relatorioCaracteres() throws IOException{
         final Logger logger = LogManager.getLogger(Main.class);
 
-        FileReader arquivo1 = new FileReader("lero-lero.txt");
+        /*FileReader arquivo1 = new FileReader("lero-lero.txt");
         BufferedReader br1 = new BufferedReader(arquivo1);
-        String data = br1.toString();
+        String data = br1.toString();*/
+
+        BufferedReader reader = new BufferedReader(new FileReader("lero-lero.txt"));
+        StringBuilder stringBuilder = new StringBuilder();
+        String linha = null;
+        String ls = System.getProperty("line.separator");
+        while ((linha = reader.readLine()) != null) {
+            stringBuilder.append(linha);
+            stringBuilder.append(ls);
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        reader.close();
+
+        String content = stringBuilder.toString();
+        int i, len;
+        int counter[] = new int[256];
+        Scanner scanner = new Scanner(System.in);
+        content = scanner.nextLine();
+        len = content.length();
+
+        for (i = 0; i < len; i++){
+            counter[(int)content.charAt(i)]++;
+        }
+        for (i = 0; i < 256; i++){
+            if(counter[i] != 0){
+                logger.info((char) i);
+                logger.debug(counter[i]);
+                //System.out.println((char) i + " --> " + counter[i]);
+            }
+        }
+    }
+
+    public static void caracteresEspeciais() throws IOException{
+        final Logger logger = LogManager.getLogger(Main.class);
+
+        BufferedReader reader = new BufferedReader(new FileReader("lero-lero.txt"));
+        StringBuilder stringBuilder = new StringBuilder();
+        String linha = null;
+        String ls = System.getProperty("line.separator");
+        while ((linha = reader.readLine()) != null) {
+            stringBuilder.append(linha);
+            stringBuilder.append(ls);
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        reader.close();
+
+        String content = stringBuilder.toString();
+        String resultStr="";
+
+        logger.debug("texto com caracteres especiais");
+        logger.debug(content);
+
+        /*for (int i=0;i<content.length();i++) {
+            if (content.charAt(i) > 64 && content.charAt(i) <= 122){
+                resultStr = resultStr + content.charAt(i);
+            }
+        }
+        isso daqui tira os espaços de tudo
+        */
 
 
-        int count[] = new int[MAX_CHAR];
+        //isso daqui tira os caracteres mas não remodela o texto
+        resultStr = content.replaceAll("[^a-zA-Z0-9]", " ");
+        logger.debug("texto sem caracteres especiais");
+        logger.debug(resultStr);
+    }
+
+}
+
+// next steps
+//1- contar quantas palavras tem no arquivo -
+//2- fazer uma contagem (relatorio) da quantidade de repetição de cada letra
+//3- remover todos os caracteres especiais e salvar sem estes caracteres (utilizar algo do apache commons util)
+
+//this is most aprecciated garbage
+/*        int count[] = new int[MAX_CHAR];
         int len = data.length();
 
         for (int i = 0; i < len; i++){
@@ -140,12 +214,4 @@ public class Main {
             if (find == 1)
 //prints occurrence of the character
                 System.out.println("The occurrence of "+ data.charAt(i)+ " is: " + count[data.charAt(i)]);
-        }
-    }
-}
-
-// next steps
-//1- contar quantas palavras tem no arquivo - done
-//2- fazer uma contagem (relatorio) da quantidade de repetição de cada letra
-//3- remover todos os caracteres especiais e salvar sem estes caracteres (utilizar algo do apache commons util)
-
+        }*/
